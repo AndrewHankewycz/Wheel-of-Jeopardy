@@ -39,19 +39,36 @@ class QuestionDatabase:
     # returns the next Question object in the category list
     # returns None if none are left in the list, check for this type before using
     def getQuestion(self, category):
+        print 'cat: ' + str(category)
         nextQuestion = None
+        print(len(self.category))
         # if this category still has questions
-        if self.category[category]:
+        if len(self.category[category]) > 0:
             nextQuestion = self.category[category][0]   # return the next question in the list
             self.category[category].remove(nextQuestion)
 
         return nextQuestion
 
+    # checks the categories to see if there are still any questions left
+    # returns true if there are still questions
+    def hasQuestions(self):
+        hasQuestions = False
+
+        count = []
+        for cat in self.category:
+            count.append(len(cat))
+            # if the category array is not empty we still have questions
+            if len(cat) > 0:
+                hasQuestions = True
+        print count
+
+        return hasQuestions
+
     def printDB(self):
         print '\nQuestions\n---------'
         for cat in self.category:
             print cat[0].category
-            
+
             for q in cat:
                 print '\t' + q.prompt
 

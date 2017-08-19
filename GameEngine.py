@@ -1,6 +1,7 @@
 from QuestionDatabase import QuestionDatabase
 from Player import Player
 from PlayerInputPrompt import PlayerInputPrompt
+from SpinWheel import SpinWheel
 
 
 class GameEngine:
@@ -9,6 +10,7 @@ class GameEngine:
     MAX_PLAYERS = 3
 
     inputUtil = PlayerInputPrompt()
+    wheel = SpinWheel()
 
     def __init__(self):
         # any instance variables should be declared here
@@ -58,18 +60,54 @@ class GameEngine:
             player = Player(i, name)
             self.players.append(player)
 
-    def askQuestion(self):
-        pass
+    # returns true if the user's answer was correct
+    def evaluateAnswer(self, question, answer):
+        return True
+
+    def takeTurn(self, playerId):
+        wheelSpot = self.wheel.spin()
+
+        # this is a question sector, ask a question
+        if wheelSpot < 5:
+            question = self.db.getQuestion(wheelSpot)
+
+            # if there is no question left in this category spin again
+            while question is None:
+                wheelSpot = self.wheel.spin()
+                print 'respinning: ' + str(wheelSpot)
+                if wheelSpot < 5:
+                    question = self.db.getQuestion(wheelSpot)
+
+            print '\nCategory \'' + question.category + '\''
+
+            promptMsg = 'Prompt: ' + question.prompt + '\nResponse: '
+            answer = self.inputUtil.promptPlayer(promptMsg)
+
+            correct = self.evaluateAnswer(question, answer)
+        else:
+            # do stuff for other sectors on the board
+            print 'not a question sector'
 
 
 # create a game object so we can begin the game
 game = GameEngine()
 game.begin('database1.xml')
-game.getPlayers()
 
-print 'Players'
-for i in range(0, len(game.players)):
-    print game.players[i].name
+
+# !!!!!---- test functionality begins here -----!!!!!!
+
+# ---------- begin player input -----------
+
+# game.getPlayers()
+#
+# print 'Players'
+# for i in range(0, len(game.players)):
+#     print game.players[i].name
+
+# ---------- end player input -----------
+
+while game.db.hasQuestions():
+    val = game.takeTurn(0)
 
 # q = game.db.getQuestion(0)
 # print q.prompt
