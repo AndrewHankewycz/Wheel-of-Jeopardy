@@ -1,78 +1,157 @@
 <?xml version="1.0"?>
 <database>
-  <category>
-    <title>Dogs</title>
-    <question>
-      <prompt>Pit Bull</prompt>
-      <answer>a big dog</answer>
-      <keyword>big</keyword>
-      <keyword>big</keyword>
-    </question>
-    <question>
-      <prompt>Yorkie</prompt>
-      <answer>a small dog</answer>
-      <keyword>small</keyword>
-      <keyword>tiny</keyword>
-    </question>
-  </category>
-  <category>
-    <title>Cats</title>
-    <question>
-      <prompt>Lion</prompt>
-      <answer>king of the jungle</answer>
-      <keyword>king</keyword>
-      <keyword>jungle</keyword>
-    </question>
-    <question>
-      <prompt>Tiger</prompt>
-      <answer>what type of cat has stripes</answer>
-      <keyword>stripes</keyword>
-      <keyword>cat</keyword>
-    </question>
-  </category>
-  <category>
-    <title>Birds</title>
-    <question>
-      <prompt>Eagle</prompt>
-      <answer>the national animal</answer>
-      <keyword>national</keyword>
-      <keyword>animal</keyword>
-    </question>
-    <question>
-      <prompt>Falcon</prompt>
-      <answer>eats rodents</answer>
-      <keyword>rodents</keyword>
-      <keyword>falcon</keyword>
-    </question>
-  </category>
-  <category>
-    <title>Snakes</title>
-    <question>
-      <prompt>Rattle Snake</prompt>
-      <answer>what shakes its tail to warn predators</answer>
-      <keyword>shakes</keyword>
-      <keyword>tail</keyword>
-    </question>
-    <question>
-      <prompt>Python</prompt>
-      <answer>what snake found in the amazon constricts its prey</answer>
-      <keyword>amazon</keyword>
-      <keyword>constricts</keyword>
-    </question>
-  </category>
-  <category>
-    <title>Fish</title>
-    <question>
-      <prompt>Shark</prompt>
-      <answer>the king of the ocean</answer>
-      <keyword>king</keyword>
-      <keyword>ocean</keyword>
-    </question>
-    <question>
-      <prompt>Dolphin</prompt>
-      <answer>known for being the friendlies creatures in the sea</answer>
-      <keyword>friendly</keyword>
-      <keyword>sea</keyword>
-    </question>
-  </category>
+  <round>
+    <category>
+      <title>Dogs</title>
+      <question>
+        <prompt>Pit Bull</prompt>
+        <answer>a big dog</answer>
+        <keyword>big</keyword>
+        <keyword>big</keyword>
+      </question>
+      <question>
+        <prompt>Yorkie</prompt>
+        <answer>a small dog</answer>
+        <keyword>small</keyword>
+        <keyword>tiny</keyword>
+      </question>
+    </category>
+    <category>
+      <title>Cats</title>
+      <question>
+        <prompt>Lion</prompt>
+        <answer>king of the jungle</answer>
+        <keyword>king</keyword>
+        <keyword>jungle</keyword>
+      </question>
+      <question>
+        <prompt>Tiger</prompt>
+        <answer>what type of cat has stripes</answer>
+        <keyword>stripes</keyword>
+        <keyword>cat</keyword>
+      </question>
+    </category>
+    <category>
+      <title>Birds</title>
+      <question>
+        <prompt>Eagle</prompt>
+        <answer>the national animal</answer>
+        <keyword>national</keyword>
+        <keyword>animal</keyword>
+      </question>
+      <question>
+        <prompt>Falcon</prompt>
+        <answer>eats rodents</answer>
+        <keyword>rodents</keyword>
+        <keyword>falcon</keyword>
+      </question>
+    </category>
+    <category>
+      <title>Snakes</title>
+      <question>
+        <prompt>Rattle Snake</prompt>
+        <answer>what shakes its tail to warn predators</answer>
+        <keyword>shakes</keyword>
+        <keyword>tail</keyword>
+      </question>
+      <question>
+        <prompt>Python</prompt>
+        <answer>what snake found in the amazon constricts its prey</answer>
+        <keyword>amazon</keyword>
+        <keyword>constricts</keyword>
+      </question>
+    </category>
+    <category>
+      <title>Fish</title>
+      <question>
+        <prompt>Shark</prompt>
+        <answer>the king of the ocean</answer>
+        <keyword>king</keyword>
+        <keyword>ocean</keyword>
+      </question>
+      <question>
+        <prompt>Dolphin</prompt>
+        <answer>known for being the friendlies creatures in the sea</answer>
+        <keyword>friendly</keyword>
+        <keyword>sea</keyword>
+      </question>
+    </category>
+  </round>
+  <round>
+    <category>
+      <title>Cat 1</title>
+      <question>
+        <prompt>q 1</prompt>
+        <answer>a big dog</answer>
+        <keyword>big</keyword>
+        <keyword>big</keyword>
+      </question>
+      <question>
+        <prompt>q 2</prompt>
+        <answer>a small dog</answer>
+        <keyword>small</keyword>
+        <keyword>tiny</keyword>
+      </question>
+    </category>
+    <category>
+      <title>Cat 2</title>
+      <question>
+        <prompt>q 1-1</prompt>
+        <answer>king of the jungle</answer>
+        <keyword>king</keyword>
+        <keyword>jungle</keyword>
+      </question>
+      <question>
+        <prompt>q 1-2</prompt>
+        <answer>what type of cat has stripes</answer>
+        <keyword>stripes</keyword>
+        <keyword>cat</keyword>
+      </question>
+    </category>
+    <category>
+      <title>Cat 3</title>
+      <question>
+        <prompt>q 2-1</prompt>
+        <answer>the national animal</answer>
+        <keyword>national</keyword>
+        <keyword>animal</keyword>
+      </question>
+      <question>
+        <prompt>q 2-2</prompt>
+        <answer>eats rodents</answer>
+        <keyword>rodents</keyword>
+        <keyword>falcon</keyword>
+      </question>
+    </category>
+    <category>
+      <title>Cat 4</title>
+      <question>
+        <prompt>q 3-1</prompt>
+        <answer>what shakes its tail to warn predators</answer>
+        <keyword>shakes</keyword>
+        <keyword>tail</keyword>
+      </question>
+      <question>
+        <prompt>q 3-2</prompt>
+        <answer>what snake found in the amazon constricts its prey</answer>
+        <keyword>amazon</keyword>
+        <keyword>constricts</keyword>
+      </question>
+    </category>
+    <category>
+      <title>Cat 4</title>
+      <question>
+        <prompt>q 4-1</prompt>
+        <answer>the king of the ocean</answer>
+        <keyword>king</keyword>
+        <keyword>ocean</keyword>
+      </question>
+      <question>
+        <prompt>q 4-2</prompt>
+        <answer>known for being the friendlies creatures in the sea</answer>
+        <keyword>friendly</keyword>
+        <keyword>sea</keyword>
+      </question>
+    </category>
+  </round>
 </database>

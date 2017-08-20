@@ -6,6 +6,7 @@ class QuestionDatabase:
 
     def __init__(self):
         # any instance variables should be declared here
+        self.rounds = [] # a list to store rounds of questions
         self.category = []    # an array of categories
         pass
 
@@ -14,30 +15,42 @@ class QuestionDatabase:
         with open(filename) as fd:
             self.db = xmltodict.parse(fd.read())
 
-        categoryIndex = 0   # categories will be stored by an index in an array
-        for cat in self.db['database']['category']:
-            self.category.append([])
-            catTitle = cat['title']
-            # self.category[catTitle] = []
+        rounds = self.db['database']['round']
+        for gameRound in rounds:
+            categoryIndex = 0   # categories will be stored by an index in an array
 
-            questions = cat['question'] # an xml question block
-            # if there is more than 1 question in this category, (there should be!)
-            if type(questions) == list:
-                qIndex = 1  # used for calculating how many pts each Q is
-                for q in cat['question']:
-                    prompt = q['prompt']
-                    answer = q['answer']
-                    keywords = q['keyword']
-                    points = qIndex * 100
-                    quest = MyQuestion(catTitle, prompt, answer, keywords, points)
-                    self.category[categoryIndex].append(quest)
-                    qIndex = qIndex + 1
-            else:
-                print 'Error: Only 1 question in this category'
+            # make new array so importing rounds wont combine into one list
+            self.category = []
+            for cat in gameRound['category']:
+            # for cat in self.db['database']['round']['category']:
+                self.category.append([])
+                catTitle = cat['title']
+                # self.category[catTitle] = []
 
-            # when we've imported all the questions from this xml category
-            # increment the index and go to the next category
-            categoryIndex = categoryIndex + 1
+                questions = cat['question'] # an xml question block
+                # if there is more than 1 question in this category, (there should be!)
+                if type(questions) == list:
+                    qIndex = 1  # used for calculating how many pts each Q is
+                    for q in cat['question']:
+                        prompt = q['prompt']
+                        answer = q['answer']
+                        keywords = q['keyword']
+                        points = qIndex * 100
+                        quest = MyQuestion(catTitle, prompt, answer, keywords, points)
+                        self.category[categoryIndex].append(quest)
+                        qIndex = qIndex + 1
+                else:
+                    print 'Error: Only 1 question in this category'
+
+                # when we've imported all the questions from this xml category
+                # increment the index and go to the next category
+                categoryIndex = categoryIndex + 1
+
+            # add this round to the list of rounds
+            self.rounds.append(self.category)
+
+        # take the first one just becuase
+        self.category = self.rounds[0]
 
     # returns the next Question object in the category list
     # returns None if none are left in the list, check for this type before using
@@ -63,7 +76,19 @@ class QuestionDatabase:
                 hasQuestions = True
         # print count
 
+        if not hasQuestions:
+            self.rounds.remove(self.rounds[0])
+
         return hasQuestions
+
+    # if there is another round in the database, get the questions ready
+    def nextRound(self):
+        if self.rounds:
+            self.category = self.rounds[0]
+
+    # returns the number of rounds in the database
+    def getRounds(self):
+        return len(self.rounds)
 
     def printDB(self):
         print '\nQuestions\n---------'
