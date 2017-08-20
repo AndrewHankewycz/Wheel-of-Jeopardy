@@ -2,12 +2,20 @@ from QuestionDatabase import QuestionDatabase
 from Player import Player
 from PlayerInputPrompt import PlayerInputPrompt
 from SpinWheel import SpinWheel
+import random
 
 
 class GameEngine:
     # class variables here
     MIN_PLAYERS = 1
     MAX_PLAYERS = 3
+
+    PLAYER_PICK = 6    # sector number which lets the player pick the category
+    OPPONENT_PICK = 7    # sector number which lets the player pick the category
+    LOSE_TURN = 8    # lose turn sector number
+    FREE_TURN = 9    # lose turn sector number
+    BANKRUPT = 10    # bankrupt sector number
+    RESPIN = 11     # respoint sector number
 
     inputUtil = PlayerInputPrompt()
     wheel = SpinWheel()
@@ -61,6 +69,51 @@ class GameEngine:
             player = Player(i, name)
             self.players.append(player)
 
+    # prompts a player to pick what category they play
+    def pickOwnCategory(self, player):
+        prompt = player.name + ', what category would you like to play?\n' + \
+            'Enter a number between 1-6\n'
+        categoryId = self.inputUtil.promptPlayer(prompt)
+
+        prompt = '\nPlease enter a valid number between 1-6\n' + \
+                 'What category would you like to play? '
+
+        # if their entry is not a number or its outside our limit of 1-3 players
+        while not categoryId.isdigit() or \
+                (int(categoryId) < 1 or \
+                int(categoryId) > 6):
+            categoryId = self.inputUtil.promptPlayer(prompt)
+
+        categoryId = int(categoryId)
+        return categoryId
+
+    # prompts a player to pick what category their opponent plays
+    def pickOpponentCategory(self, player, opponent):
+        prompt = opponent.name + ', what category would you like ' + \
+            player.name + ' to play?\n' + \
+            'Enter a number between 1-6\n'
+        categoryId = self.inputUtil.promptPlayer(prompt)
+
+        prompt = '\nPlease enter a valid number between 1-6\n' + \
+                 'What category would you like ' + player.name + ' play? '
+
+        # if their entry is not a number or its outside our limit of 1-3 players
+        while not categoryId.isdigit() or \
+                (int(categoryId) < 1 or \
+                int(categoryId) > 6):
+            categoryId = self.inputUtil.promptPlayer(prompt)
+
+        categoryId = int(categoryId)
+        return categoryId
+
+    def pickWinner(self):
+        winner = self.players[0]
+        for p in self.players:
+            if winner.points >= p.points:
+                winner = p
+
+        print 'Congradulations ' + winner.name + ' you are the winner!'
+
     # returns true if the user's answer was correct
     def evaluateAnswer(self, question, answer):
         splitAns = answer.split(' ')
@@ -87,40 +140,89 @@ class GameEngine:
         print 'Correct! ' + player.name + ' now has ' + \
             str(player.points) + ' points'
 
+    def askQuestion(self, player, categoryId):
+        question = self.db.getQuestion(categoryId)
+
+        # TODO this needs work, if they spin again they could land on a token
+        # TODO this needs work, if they spin again they could land on a token
+        # TODO this needs work, if they spin again they could land on a token
+        # TODO this needs work, if they spin again they could land on a token
+        # if there is no question left in this category spin again
+        while question is None:
+            wheelSpot = self.wheel.spin()
+            print 'respinning: ' + str(wheelSpot)
+            if wheelSpot < 5:
+                question = self.db.getQuestion(wheelSpot)
+
+        print '\nCategory \'' + question.category + '\''
+
+        promptMsg = 'Prompt: ' + question.prompt + '\n' \
+            + player.name + '\'s response: '
+        keyHints = 'Keys: ' + str(question.keywords)
+        print keyHints
+        answer = self.inputUtil.promptPlayer(promptMsg)
+
+        correct = self.evaluateAnswer(question, answer)
+
+        # take care of adding/subtracting players score
+        self.registerScore(player, correct, question.points)
+
     def takeTurn(self, player):
-        print '\nPlayer ' + str(player.id) + '\'s turn'
+        print player.name + '\'s turn'
         wheelSpot = self.wheel.spin()
+
+        wheelSpot = GameEngine.OPPONENT_PICK
 
         # this is a question sector, ask a question
         if wheelSpot < 5:
-            question = self.db.getQuestion(wheelSpot)
-
-            # TODO this needs work, if they spin again they could land on a token
-            # TODO this needs work, if they spin again they could land on a token
-            # TODO this needs work, if they spin again they could land on a token
-            # TODO this needs work, if they spin again they could land on a token
-            # if there is no question left in this category spin again
-            while question is None:
-                wheelSpot = self.wheel.spin()
-                print 'respinning: ' + str(wheelSpot)
-                if wheelSpot < 5:
-                    question = self.db.getQuestion(wheelSpot)
-
-            print '\nCategory \'' + question.category + '\''
-
-            promptMsg = 'Prompt: ' + question.prompt + '\nResponse: '
-            keyHints = 'Keys: ' + str(question.keywords)
-            print keyHints
-            answer = self.inputUtil.promptPlayer(promptMsg)
-
-            correct = self.evaluateAnswer(question, answer)
-
-            # take care of adding/subtracting players score
-            self.registerScore(player, correct, question.points)
+            self.askQuestion(player, wheelSpot)
+            # question = self.db.getQuestion(wheelSpot)
+            #
+            # # TODO this needs work, if they spin again they could land on a token
+            # # TODO this needs work, if they spin again they could land on a token
+            # # TODO this needs work, if they spin again they could land on a token
+            # # TODO this needs work, if they spin again they could land on a token
+            # # if there is no question left in this category spin again
+            # while question is None:
+            #     wheelSpot = self.wheel.spin()
+            #     print 'respinning: ' + str(wheelSpot)
+            #     if wheelSpot < 5:
+            #         question = self.db.getQuestion(wheelSpot)
+            #
+            # print '\nCategory \'' + question.category + '\''
+            #
+            # promptMsg = 'Prompt: ' + question.prompt + '\nResponse: '
+            # keyHints = 'Keys: ' + str(question.keywords)
+            # print keyHints
+            # answer = self.inputUtil.promptPlayer(promptMsg)
+            #
+            # correct = self.evaluateAnswer(question, answer)
+            #
+            # # take care of adding/subtracting players score
+            # self.registerScore(player, correct, question.points)
+        elif wheelSpot == GameEngine.PLAYER_PICK:
+            categoryId = self.pickOwnCategory(player)
+            self.askQuestion(player, categoryId)
+            pass
+        elif wheelSpot == GameEngine.OPPONENT_PICK:
+            opponentId = random.randrange(0, len(self.players), 1)
+            # players cant pick thier own category here
+            while opponentId == player.id:
+                opponentId = random.randrange(0, len(self.players), 1)
+            categoryId = self.pickOpponentCategory(player, self.players[opponentId])
+            self.askQuestion(player, categoryId)
+        elif wheelSpot == GameEngine.LOSE_TURN:
+            print 'Sorry, you lose this turn'
+        elif wheelSpot == GameEngine.FREE_TURN:
+            print 'You get a FREE TURN Token!'
+            player.freeTurnTokens = player.freeTurnTokens + 1
+        elif wheelSpot == GameEngine.BANKRUPT:
+            print 'Sorry, you lose all of your points'
+            player.points = 0
+        elif wheelSpot == GameEngine.RESPIN:
+            print 'Spin Again!'
         else:
-            # do stuff for other sectors on the board
-            # TODO fill this in wiht token stuff
-            print 'not a question sector'
+            print 'Error: this sector is not implemented!!!!'
 
 
 # create a game object so we can begin the game
@@ -145,6 +247,10 @@ while game.db.hasQuestions():
     player = game.players[activePlayerId]
     game.takeTurn(player)
     activePlayerId = (activePlayerId + 1) % len(game.players)
+
+# should move to round 2 here
+
+game.pickWinner()
 
 # q = game.db.getQuestion(0)
 # print q.prompt

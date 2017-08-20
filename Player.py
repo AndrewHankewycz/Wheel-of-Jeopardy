@@ -7,4 +7,4 @@ class Player:
         self.id = id     # TODO not sure why players have ids right now
         self.name = name  # players name
         self.points = 0   # points total
-        self.numOfTokens = 0    # number of take turn tokens
+        self.freeTurnTokens = 0    # number of take turn tokens
