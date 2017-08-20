@@ -23,12 +23,15 @@ class QuestionDatabase:
             questions = cat['question'] # an xml question block
             # if there is more than 1 question in this category, (there should be!)
             if type(questions) == list:
+                qIndex = 1  # used for calculating how many pts each Q is
                 for q in cat['question']:
                     prompt = q['prompt']
                     answer = q['answer']
                     keywords = q['keyword']
-                    quest = MyQuestion(catTitle, prompt, answer, keywords)
+                    points = qIndex * 100
+                    quest = MyQuestion(catTitle, prompt, answer, keywords, points)
                     self.category[categoryIndex].append(quest)
+                    qIndex = qIndex + 1
             else:
                 print 'Error: Only 1 question in this category'
 
@@ -39,9 +42,7 @@ class QuestionDatabase:
     # returns the next Question object in the category list
     # returns None if none are left in the list, check for this type before using
     def getQuestion(self, category):
-        print 'cat: ' + str(category)
         nextQuestion = None
-        print(len(self.category))
         # if this category still has questions
         if len(self.category[category]) > 0:
             nextQuestion = self.category[category][0]   # return the next question in the list
@@ -60,7 +61,7 @@ class QuestionDatabase:
             # if the category array is not empty we still have questions
             if len(cat) > 0:
                 hasQuestions = True
-        print count
+        # print count
 
         return hasQuestions
 
