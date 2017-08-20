@@ -171,8 +171,6 @@ class GameEngine:
         print player.name + '\'s turn'
         wheelSpot = self.wheel.spin()
 
-        wheelSpot = GameEngine.OPPONENT_PICK
-
         # this is a question sector, ask a question
         if wheelSpot < 5:
             self.askQuestion(player, wheelSpot)
