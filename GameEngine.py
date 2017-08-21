@@ -97,6 +97,14 @@ class GameEngine:
         categoryId = int(categoryId)
         return categoryId - 1
 
+    def useToken(self, player):
+        if player.freeTurnTokens>0:
+            token_use = raw_input('would you like to use a token? Enter y or n \n')
+            if token_use == 'y':
+                player.freeTurnTokens -= 1
+                self.takeTurn(player)        
+        return
+
     # prompts a player to pick what category their opponent plays
     def pickOpponentCategory(self, player, opponent):
         self.board.draw(self.db)
@@ -121,14 +129,14 @@ class GameEngine:
     def pickWinner(self):
         winner = None
         for p in self.players:
-            if p.points > 0:
+            if sum(p.points) > 0:
                 winner = p
-            if winner is not None and p.points >= winner.points:
+            if winner is not None and sum(p.points) >= sum(winner.points):
                 winner = p
 
         # TODO handle ties, or when there is no score
         if winner is not None:
-            print 'Congradulations ' + winner.name + ' you are the winner!'
+            print 'Congratulations ' + winner.name + ' you are the winner!'
         else:
             print 'There was no winner this game'
 
@@ -143,20 +151,26 @@ class GameEngine:
         return False
 
     # adds or subtracts points from a players score
-    # i dont think we take points away but if we do this will make it nicer
     def registerScore(self, player, correct, points):
-        if not correct:
-            print 'Incorrect'
-            return
-
         # takes care of doubling the points in round 2
         # would possibly also work
         points = points * self.round
 
-        player.points = player.points + points
 
-        print 'Correct! ' + player.name + ' now has ' + \
-            str(player.points) + ' points'
+        if correct:
+            print 'Correct'
+            player.points[self.round-1] = player.points[self.round-1] + points
+
+        elif not correct:
+            print 'Incorrect'
+            #print 'would you like to use a token? Enter y or n'
+            #player input yes or no
+            #if yes, spin again
+            self.useToken(self, player)
+            player.points[self.round-1] -= points   
+
+        print player.name + ' now has ' + \
+            str(sum(player.points)) + ' points'
 
     def askQuestion(self, player, categoryId):
         question = self.db.getQuestion(categoryId)
@@ -205,12 +219,16 @@ class GameEngine:
             self.askQuestion(player, categoryId)
         elif wheelSpot == GameEngine.LOSE_TURN:
             print 'Sorry, you lose this turn'
+            #print 'would you like to use a token? Enter y or n'
+            #player input yes or no
+            #if yes, spin again
+            self.useToken(self, player)
         elif wheelSpot == GameEngine.FREE_TURN:
             print 'You get a FREE TURN Token!'
             player.freeTurnTokens = player.freeTurnTokens + 1
         elif wheelSpot == GameEngine.BANKRUPT:
-            print 'Sorry, you lose all of your points'
-            player.points = 0
+            print 'Sorry, you lose your points for this round'
+            player.points[self.round-1] = 0
         elif wheelSpot == GameEngine.RESPIN:
             print 'Spin Again!'
             self.takeTurn(player)
