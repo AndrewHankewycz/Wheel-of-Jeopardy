@@ -21,6 +21,7 @@ class QuestionDatabase:
 
             # make new array so importing rounds wont combine into one list
             self.category = []
+            # TODO should probably check that there are enough categories/questions to play a game
             for cat in gameRound['category']:
             # for cat in self.db['database']['round']['category']:
                 self.category.append([])

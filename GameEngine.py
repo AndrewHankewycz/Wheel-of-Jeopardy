@@ -2,12 +2,15 @@ from QuestionDatabase import QuestionDatabase
 from Player import Player
 from PlayerInputPrompt import PlayerInputPrompt
 from SpinWheel import SpinWheel
+from GameBoard import GameBoard
 import random
 import signal, os
 
 def handleSignal(signum, frame):
     print 'signal caught'
 
+def clearScreen():
+    os.system('cls')
 
 class GameEngine:
     # class variables here
@@ -23,6 +26,7 @@ class GameEngine:
 
     inputUtil = PlayerInputPrompt()
     wheel = SpinWheel()
+    board = GameBoard()
 
     def __init__(self):
         # any instance variables should be declared here
@@ -75,6 +79,7 @@ class GameEngine:
 
     # prompts a player to pick what category they play
     def pickOwnCategory(self, player):
+        self.board.draw(self.db)
         prompt = player.name + ', what category would you like to play?\n' + \
             'Enter a number between 1-6\n'
         categoryId = self.inputUtil.promptPlayer(prompt)
@@ -90,10 +95,11 @@ class GameEngine:
             categoryId = self.inputUtil.promptPlayer(prompt)
 
         categoryId = int(categoryId)
-        return categoryId
+        return categoryId - 1
 
     # prompts a player to pick what category their opponent plays
     def pickOpponentCategory(self, player, opponent):
+        self.board.draw(self.db)
         prompt = opponent.name + ', what category would you like ' + \
             player.name + ' to play?\n' + \
             'Enter a number between 1-6\n'
@@ -110,7 +116,7 @@ class GameEngine:
             categoryId = self.inputUtil.promptPlayer(prompt)
 
         categoryId = int(categoryId)
-        return categoryId
+        return categoryId - 1
 
     def pickWinner(self):
         winner = None
@@ -209,23 +215,18 @@ class GameEngine:
             print 'Spin Again!'
             self.takeTurn(player)
         else:
-            print 'Error: this sector is not implemented!!!!'
+            print 'Error: this sector [' + str(wheelSpot) + '] is not implemented!!!!'
 
 
 # create a game object so we can begin the game
 game = GameEngine()
 game.begin('database1.xml')
+game.board.setDB(game.db)
 
-
-# !!!!!---- test functionality begins here -----!!!!!!
 
 # ---------- begin player input -----------
 
 game.getPlayers()
-#
-# print 'Players'
-# for i in range(0, len(game.players)):
-#     print game.players[i].name
 
 # ---------- end player input -----------
 
@@ -242,9 +243,9 @@ for rounds in range(0, game.db.getRounds()):
     game.db.nextRound()
     game.round = game.round + 1
 
-# should move to round 2 here
+    print 'Round ' + str(rounds + 1) + ' complete. Moving to round ' + \
+        str(rounds + 2) + ' doubles the point values'
 
 game.pickWinner()
 
-# q = game.db.getQuestion(0)
-# print q.prompt
+# game.board.draw(game.db)

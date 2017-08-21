@@ -76,6 +76,22 @@
         <keyword>sea</keyword>
       </question>
     </category>
+    <category>
+      <title>Bugs</title>
+      <question>
+        <prompt>Ant</prompt>
+        <answer>small harmless bugs</answer>
+        <keyword>small</keyword>
+        <keyword>harmless</keyword>
+      </question>
+      <question>
+        <prompt>Tick</prompt>
+        <answer>found in the woods and know to carry lime disease</answer>
+        <keyword>woods</keyword>
+        <keyword>lime</keyword>
+        <keyword>disease</keyword>
+      </question>
+    </category>
   </round>
   <round>
     <category>
@@ -148,6 +164,21 @@
       </question>
       <question>
         <prompt>q 4-2</prompt>
+        <answer>known for being the friendlies creatures in the sea</answer>
+        <keyword>friendly</keyword>
+        <keyword>sea</keyword>
+      </question>
+    </category>
+    <category>
+      <title>Cat 5</title>
+      <question>
+        <prompt>q 5-1</prompt>
+        <answer>the king of the ocean</answer>
+        <keyword>king</keyword>
+        <keyword>ocean</keyword>
+      </question>
+      <question>
+        <prompt>q 5-2</prompt>
         <answer>known for being the friendlies creatures in the sea</answer>
         <keyword>friendly</keyword>
         <keyword>sea</keyword>
