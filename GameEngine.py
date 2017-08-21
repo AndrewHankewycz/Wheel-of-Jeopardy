@@ -115,9 +115,9 @@ class GameEngine:
     def pickWinner(self):
         winner = None
         for p in self.players:
-            if p.points > 0:
+            if sum(p.points) > 0:
                 winner = p
-            if winner is not None and p.points >= winner.points:
+            if winner is not None and sum(p.points) >= sum(winner.points):
                 winner = p
 
         # TODO handle ties, or when there is no score
@@ -147,10 +147,10 @@ class GameEngine:
         # would possibly also work
         points = points * self.round
 
-        player.points = player.points + points
+        player.points[self.round-1] = player.points[self.round-1] + points
 
         print 'Correct! ' + player.name + ' now has ' + \
-            str(player.points) + ' points'
+            str(sum(player.points)) + ' points'
 
     def askQuestion(self, player, categoryId):
         question = self.db.getQuestion(categoryId)
@@ -203,8 +203,8 @@ class GameEngine:
             print 'You get a FREE TURN Token!'
             player.freeTurnTokens = player.freeTurnTokens + 1
         elif wheelSpot == GameEngine.BANKRUPT:
-            print 'Sorry, you lose all of your points'
-            player.points = 0
+            print 'Sorry, you lose your points for this round'
+            player.points[self.round-1] = 0
         elif wheelSpot == GameEngine.RESPIN:
             print 'Spin Again!'
             self.takeTurn(player)
