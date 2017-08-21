@@ -139,17 +139,24 @@ class GameEngine:
     # adds or subtracts points from a players score
     # i dont think we take points away but if we do this will make it nicer
     def registerScore(self, player, correct, points):
-        if not correct:
-            print 'Incorrect'
-            return
-
         # takes care of doubling the points in round 2
         # would possibly also work
         points = points * self.round
 
-        player.points[self.round-1] = player.points[self.round-1] + points
 
-        print 'Correct! ' + player.name + ' now has ' + \
+        if not correct:
+            print 'Incorrect'
+            return
+
+
+        if correct:
+            player.points[self.round-1] = player.points[self.round-1] + points
+
+        elif not correct:
+            print 'Incorrect'
+            player.points[self.round-1] -= points   
+
+        print player.name + ' now has ' + \
             str(sum(player.points)) + ' points'
 
     def askQuestion(self, player, categoryId):
