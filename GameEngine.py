@@ -144,12 +144,8 @@ class GameEngine:
         points = points * self.round
 
 
-        if not correct:
-            print 'Incorrect'
-            return
-
-
         if correct:
+            print 'Correct'
             player.points[self.round-1] = player.points[self.round-1] + points
 
         elif not correct:
