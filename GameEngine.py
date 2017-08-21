@@ -92,6 +92,14 @@ class GameEngine:
         categoryId = int(categoryId)
         return categoryId
 
+    def useToken(self, player):
+        if player.freeTurnTokens>0:
+            token_use = raw_input('would you like to use a token? Enter y or n \n')
+            if token_use == 'y':
+                player.freeTurnTokens -= 1
+                self.takeTurn(player)        
+        return
+
     # prompts a player to pick what category their opponent plays
     def pickOpponentCategory(self, player, opponent):
         prompt = opponent.name + ', what category would you like ' + \
@@ -122,7 +130,7 @@ class GameEngine:
 
         # TODO handle ties, or when there is no score
         if winner is not None:
-            print 'Congradulations ' + winner.name + ' you are the winner!'
+            print 'Congratulations ' + winner.name + ' you are the winner!'
         else:
             print 'There was no winner this game'
 
@@ -137,7 +145,6 @@ class GameEngine:
         return False
 
     # adds or subtracts points from a players score
-    # i dont think we take points away but if we do this will make it nicer
     def registerScore(self, player, correct, points):
         # takes care of doubling the points in round 2
         # would possibly also work
@@ -150,6 +157,10 @@ class GameEngine:
 
         elif not correct:
             print 'Incorrect'
+            #print 'would you like to use a token? Enter y or n'
+            #player input yes or no
+            #if yes, spin again
+            self.useToken(self, player)
             player.points[self.round-1] -= points   
 
         print player.name + ' now has ' + \
@@ -202,6 +213,10 @@ class GameEngine:
             self.askQuestion(player, categoryId)
         elif wheelSpot == GameEngine.LOSE_TURN:
             print 'Sorry, you lose this turn'
+            #print 'would you like to use a token? Enter y or n'
+            #player input yes or no
+            #if yes, spin again
+            self.useToken(self, player)
         elif wheelSpot == GameEngine.FREE_TURN:
             print 'You get a FREE TURN Token!'
             player.freeTurnTokens = player.freeTurnTokens + 1
