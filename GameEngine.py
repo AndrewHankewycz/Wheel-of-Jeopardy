@@ -3,6 +3,7 @@ from Player import Player
 from PlayerInputPrompt import PlayerInputPrompt
 from SpinWheel import SpinWheel
 from GameBoard import GameBoard
+from WheelUI import WheelUI
 import random
 import signal, os
 
@@ -10,7 +11,14 @@ def handleSignal(signum, frame):
     print 'signal caught'
 
 def clearScreen():
-    os.system('cls')
+    # the unix command
+    if os.name == 'posix' or \
+        os.name == 'mac' or \
+        os.name == 'os2':
+        os.system('clear')
+    elif os.name == 'nt':
+        # the windows command
+        os.system('cls')
 
 class GameEngine:
     # class variables here
@@ -27,6 +35,7 @@ class GameEngine:
     inputUtil = PlayerInputPrompt()
     wheel = SpinWheel()
     board = GameBoard()
+    wheelUI = WheelUI()
 
     def __init__(self):
         # any instance variables should be declared here
@@ -58,6 +67,7 @@ class GameEngine:
         return playerName
 
     def getPlayers(self):
+        clearScreen()
         prompt = 'How many players would you like? '
         numPlayers = self.inputUtil.promptPlayer(prompt)
 
@@ -79,7 +89,6 @@ class GameEngine:
 
     # prompts a player to pick what category they play
     def pickOwnCategory(self, player):
-        self.board.draw(self.db)
         prompt = player.name + ', what category would you like to play?\n' + \
             'Enter a number between 1-6\n'
         categoryId = self.inputUtil.promptPlayer(prompt)
@@ -107,7 +116,6 @@ class GameEngine:
 
     # prompts a player to pick what category their opponent plays
     def pickOpponentCategory(self, player, opponent):
-        self.board.draw(self.db)
         prompt = opponent.name + ', what category would you like ' + \
             player.name + ' to play?\n' + \
             'Enter a number between 1-6\n'
@@ -174,7 +182,6 @@ class GameEngine:
 
     def askQuestion(self, player, categoryId):
         question = self.db.getQuestion(categoryId)
-        print 'cat id: ' + str(categoryId)
 
         # TODO this needs work, if they spin again they could land on a token
         # TODO this needs work, if they spin again they could land on a token
@@ -240,6 +247,7 @@ class GameEngine:
 game = GameEngine()
 game.begin('database1.xml')
 game.board.setDB(game.db)
+game.wheelUI.setDB(game.db)
 
 
 # ---------- begin player input -----------
@@ -254,6 +262,9 @@ for rounds in range(0, game.db.getRounds()):
     while game.db.hasQuestions():
         player = game.players[activePlayerId]
 
+        clearScreen()
+        game.board.draw(game.db, game.round)
+        game.wheelUI.draw(0,0)
         print player.name + '\'s turn'
         game.takeTurn(player)
         activePlayerId = (activePlayerId + 1) % len(game.players)
