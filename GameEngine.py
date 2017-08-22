@@ -278,3 +278,8 @@ for rounds in range(0, game.db.getRounds()):
 game.pickWinner()
 
 # game.board.draw(game.db)
+# lastPick = 0
+# for i in range(0, 5, 1):
+#     curPick = int(raw_input('what category would you like?'))
+#     game.wheelUI.animate(lastPick, curPick)
+#     lastPick = curPick
