@@ -253,8 +253,7 @@ class GameEngine:
             print 'Error: this sector [' + str(wheelSpot) + '] is not implemented!!!!'
             
 
-        prompt = '\n\nPress any key to continue...'
-        raw_input(prompt)
+
 
 
 # create a game object so we can begin the game
@@ -282,6 +281,8 @@ for rounds in range(0, game.db.getRounds()):
         
         # print player.name + '\'s turn'
         game.takeTurn(player)
+        prompt = '\n\nPress any key to continue...'
+        raw_input(prompt)
         activePlayerId = (activePlayerId + 1) % len(game.players)
         
     game.db.nextRound()
