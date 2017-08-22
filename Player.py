@@ -8,3 +8,7 @@ class Player:
         self.name = name  # players name
         self.points = [0,0]   # points total
         self.freeTurnTokens = 0    # number of take turn tokens
+    def showScore(self):
+        print ' Player ' + self.name + ', round 1 score: ' + str(self.points[0])
+        print ' Player ' + self.name + ', round 2 score: ' + str(self.points[1])
+

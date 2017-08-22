@@ -264,9 +264,11 @@ print game.db.getRounds()
 for rounds in range(0, game.db.getRounds()):
     while game.db.hasQuestions():
         player = game.players[activePlayerId]
-
         clearScreen()
         game.board.draw(game.db, game.round)
+        for x in range(0,len(game.players)):
+            myplayer = game.players[x]
+            myplayer.showScore()
         game.wheelUI.draw(0,0)
         print player.name + '\'s turn'
         game.takeTurn(player)
