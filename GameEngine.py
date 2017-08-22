@@ -257,7 +257,8 @@ class GameEngine:
             print 'Error: this sector [' + str(wheelSpot) + '] is not implemented!!!!'
             
 
-        sleep(2)
+        prompt = '\n\nPress any key to continue'
+        raw_input(prompt)
 
 
 # create a game object so we can begin the game
