@@ -11,23 +11,28 @@ class GameBoard:
         for cat in db.category:
             self.categoryTitles.append(cat[0].category)
 
-    def draw(self, db):
+    def draw(self, db, curRound):
         console = sys.stdout    # to save typing
 
+        print '  ------------------------------'
         # print category headings
         for title in self.categoryTitles:
             console.write(' | ' + title)
 
-        print '\n------------------------------'
+        print '|\n  ------------------------------'
 
         catIndex = 1
         for i in range(0, 5, 1):
+            console.write('  ')
             for cat in db.category:
-                if len(cat) > i:
-                    console.write(str(cat[i].points) + '|')
-                else:
+                written = False
+                for q in cat:
+                    if q.points / curRound / 100 == (i + 1):
+                        console.write(str(q.points) + '|')
+                        written = True
+                if written == False:
                     console.write('xxx' + '|')
 
-            print '\n------------------------------'
+            print '\n  ------------------------------'
 
         # print points section
