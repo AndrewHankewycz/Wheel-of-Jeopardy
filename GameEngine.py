@@ -206,10 +206,13 @@ class GameEngine:
         print keyHints
         answer = self.inputUtil.promptPlayer(promptMsg)
 
-        correct = self.evaluateAnswer(question, answer)
-
-        # take care of adding/subtracting players score
-        self.registerScore(player, correct, question.points)
+        if answer != '':
+            correct = self.evaluateAnswer(question, answer)
+        
+            # take care of adding/subtracting players score
+            self.registerScore(player, correct, question.points)
+        else:
+            print 'No answer, no points deducted'
 
     def takeTurn(self, player):
         wheelSpot = self.wheel.spin()
