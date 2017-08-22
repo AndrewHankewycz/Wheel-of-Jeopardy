@@ -210,10 +210,13 @@ class GameEngine:
         print keyHints
         answer = self.inputUtil.promptPlayer(promptMsg)
 
-        correct = self.evaluateAnswer(question, answer)
-
-        # take care of adding/subtracting players score
-        self.registerScore(player, correct, question.points)
+        if answer != '':
+            correct = self.evaluateAnswer(question, answer)
+        
+            # take care of adding/subtracting players score
+            self.registerScore(player, correct, question.points)
+        else:
+            print 'No answer, no points deducted'
 
     def takeTurn(self, player):
         wheelSpot = self.wheel.spin()
@@ -262,7 +265,8 @@ class GameEngine:
             print 'Error: this sector [' + str(wheelSpot) + '] is not implemented!!!!'
             
 
-        sleep(2)
+        prompt = '\n\nPress any key to continue'
+        raw_input(prompt)
 
 
 # create a game object so we can begin the game
