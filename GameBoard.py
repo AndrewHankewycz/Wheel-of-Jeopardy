@@ -14,25 +14,26 @@ class GameBoard:
     def draw(self, db, curRound):
         console = sys.stdout    # to save typing
 
-        print '  ------------------------------'
+        print ' ------------------------------------------------'
         # print category headings
+        console.write(' |')
         for title in self.categoryTitles:
-            console.write(' | ' + title)
+            console.write(title + '\t|')
 
-        print '|\n  ------------------------------'
+        print '\n ------------------------------------------------'
 
         catIndex = 1
         for i in range(0, 5, 1):
-            console.write('  ')
+            console.write(' |')
             for cat in db.category:
                 written = False
                 for q in cat:
                     if q.points / curRound / 100 == (i + 1):
-                        console.write(str(q.points) + '|')
+                        console.write(str(q.points) + '\t|')
                         written = True
                 if written == False:
-                    console.write('xxx' + '|')
+                    console.write('xxx' + '\t|')
 
-            print '\n  ------------------------------'
+            print '\n ------------------------------------------------'
 
         # print points section
