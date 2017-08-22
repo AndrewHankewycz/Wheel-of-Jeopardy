@@ -6,6 +6,7 @@ from GameBoard import GameBoard
 from WheelUI import WheelUI
 import random
 import signal, os
+from time import sleep
 
 def handleSignal(signum, frame):
     print 'signal caught'
@@ -209,6 +210,10 @@ class GameEngine:
 
     def takeTurn(self, player):
         wheelSpot = self.wheel.spin()
+        
+        game.wheelUI.animate(0,wheelSpot)
+        
+        game.board.draw(game.db, game.round)
 
         # this is a question sector, ask a question
         if wheelSpot < 5:
@@ -241,6 +246,8 @@ class GameEngine:
             self.takeTurn(player)
         else:
             print 'Error: this sector [' + str(wheelSpot) + '] is not implemented!!!!'
+            
+        sleep(2)
 
 
 # create a game object so we can begin the game
@@ -257,15 +264,16 @@ game.getPlayers()
 # ---------- end player input -----------
 
 activePlayerId = 0
-print game.db.getRounds()
+lastSpinPos = 0
 for rounds in range(0, game.db.getRounds()):
     while game.db.hasQuestions():
         player = game.players[activePlayerId]
 
         clearScreen()
-        game.board.draw(game.db, game.round)
-        game.wheelUI.draw(0,0)
-        print player.name + '\'s turn'
+        prompt = player.name + '\'s turn\nPress any key to spin'
+        raw_input(prompt)
+        
+        # print player.name + '\'s turn'
         game.takeTurn(player)
         activePlayerId = (activePlayerId + 1) % len(game.players)
 
