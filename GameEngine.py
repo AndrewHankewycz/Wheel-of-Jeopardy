@@ -250,6 +250,9 @@ class GameEngine:
         else:
             print 'Error: this sector [' + str(wheelSpot) + '] is not implemented!!!!'
             
+        for x in range(0,len(self.players)):
+            myplayer = self.players[x]
+            myplayer.showScore()
         sleep(2)
 
 
@@ -272,19 +275,11 @@ for rounds in range(0, game.db.getRounds()):
     while game.db.hasQuestions():
         player = game.players[activePlayerId]
         clearScreen()
-<<<<<<< HEAD
-        game.board.draw(game.db, game.round)
-        for x in range(0,len(game.players)):
-            myplayer = game.players[x]
-            myplayer.showScore()
-        game.wheelUI.draw(0,0)
-        print player.name + '\'s turn'
-=======
+
         prompt = player.name + '\'s turn\nPress any key to spin'
         raw_input(prompt)
         
         # print player.name + '\'s turn'
->>>>>>> 8d080a667fd7f43e0fbe3b3223519381a4386d7f
         game.takeTurn(player)
         activePlayerId = (activePlayerId + 1) % len(game.players)
 
