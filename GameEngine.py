@@ -217,6 +217,9 @@ class GameEngine:
         game.wheelUI.animate(0,wheelSpot)
         
         game.board.draw(game.db, game.round)
+        for x in range(0,len(self.players)):
+            myplayer = self.players[x]
+            myplayer.showScore()
 
         # this is a question sector, ask a question
         if wheelSpot < 5:
@@ -250,9 +253,7 @@ class GameEngine:
         else:
             print 'Error: this sector [' + str(wheelSpot) + '] is not implemented!!!!'
             
-        for x in range(0,len(self.players)):
-            myplayer = self.players[x]
-            myplayer.showScore()
+
         sleep(2)
 
 
