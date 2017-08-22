@@ -1,4 +1,16 @@
 import sys
+import os
+from time import sleep
+
+def clearScreen():
+    # the unix command
+    if os.name == 'posix' or \
+        os.name == 'mac' or \
+        os.name == 'os2':
+        os.system('clear')
+    elif os.name == 'nt':
+        # the windows command
+        os.system('cls')
 
 class WheelUI:
     # class variables here
@@ -13,6 +25,7 @@ class WheelUI:
         self.sectorWords[11] = 'Respin'
 
         self.wheelString = ''
+        self.sectorIndex = [0] * 12
 
     # used to store the category titles, since they will disappear once all
     # questions are asked from that category
@@ -23,11 +36,10 @@ class WheelUI:
             self.sectorWords[catIndex] = cat[0].category
             catIndex += 1
 
-        self.generateString()
+        self.generateSectorString()
 
-    def generateString(self):
+    def generateSectorString(self):
         self.wheelString = ''
-        self.sectorIndex = [0] * 12
 
         # append each sector to the string
         i = 0
@@ -38,26 +50,41 @@ class WheelUI:
             i += 1
         self.wheelString += ' |'
 
-        self.wheelIndicator = [' '] * len(self.wheelString)
-        for index in self.sectorIndex:
-            self.wheelIndicator[index] = '^'
+    def getIndicator(self, pos):
+        wheelIndicator = [' '] * len(self.wheelString)
+        # for index in self.sectorIndex:
+        wheelIndicator[self.sectorIndex[pos]] = '^'
 
-        self.wheelIndicator = ''.join(self.wheelIndicator)
+        wheelIndicator = ''.join(wheelIndicator)
+        return wheelIndicator
 
-    def draw(self, lastPos, spinPos):
+    def animate(self, lastPos, spinPos):
         console = sys.stdout    # to save typing
 
         line = '  '
         for i in range(0, len(self.wheelString) - 3, 1):
             line += '-'
         line += '  \n'
-        console.write(line)
-        # print '  ------------------------------'
-        # print category headings
-        print self.wheelString
-        print self.wheelIndicator
-        # for sector in self.sectorWords:
-        #     console.write(' | ' + sector)
 
-        # print '  ------------------------------'
-        console.write(line)
+        failsafe = 0
+        i = lastPos # always move forward 1 so it does the animation even if its the same sector
+        animations = 1
+        while True:
+            clearScreen()
+            console.write(line)
+            # print '  ------------------------------'
+            # print category headings
+            print self.wheelString
+            print self.getIndicator(i % 12)
+            # for sector in self.sectorWords:
+            #     console.write(' | ' + sector)
+
+            # print '  ------------------------------'
+            console.write(line)
+
+            if i % 12 == spinPos and animations > 1:
+                break
+
+            animations += 1
+            i += 1
+            sleep(.25)

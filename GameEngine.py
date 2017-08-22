@@ -6,6 +6,7 @@ from GameBoard import GameBoard
 from WheelUI import WheelUI
 import random
 import signal, os
+from time import sleep
 
 def handleSignal(signum, frame):
     print 'signal caught'
@@ -212,6 +213,10 @@ class GameEngine:
 
     def takeTurn(self, player):
         wheelSpot = self.wheel.spin()
+        
+        game.wheelUI.animate(0,wheelSpot)
+        
+        game.board.draw(game.db, game.round)
 
         # this is a question sector, ask a question
         if wheelSpot < 5:
@@ -244,6 +249,8 @@ class GameEngine:
             self.takeTurn(player)
         else:
             print 'Error: this sector [' + str(wheelSpot) + '] is not implemented!!!!'
+            
+        sleep(2)
 
 
 # create a game object so we can begin the game
@@ -260,17 +267,24 @@ game.getPlayers()
 # ---------- end player input -----------
 
 activePlayerId = 0
-print game.db.getRounds()
+lastSpinPos = 0
 for rounds in range(0, game.db.getRounds()):
     while game.db.hasQuestions():
         player = game.players[activePlayerId]
         clearScreen()
+<<<<<<< HEAD
         game.board.draw(game.db, game.round)
         for x in range(0,len(game.players)):
             myplayer = game.players[x]
             myplayer.showScore()
         game.wheelUI.draw(0,0)
         print player.name + '\'s turn'
+=======
+        prompt = player.name + '\'s turn\nPress any key to spin'
+        raw_input(prompt)
+        
+        # print player.name + '\'s turn'
+>>>>>>> 8d080a667fd7f43e0fbe3b3223519381a4386d7f
         game.takeTurn(player)
         activePlayerId = (activePlayerId + 1) % len(game.players)
 
@@ -283,3 +297,8 @@ for rounds in range(0, game.db.getRounds()):
 game.pickWinner()
 
 # game.board.draw(game.db)
+# lastPick = 0
+# for i in range(0, 5, 1):
+#     curPick = int(raw_input('what category would you like?'))
+#     game.wheelUI.animate(lastPick, curPick)
+#     lastPick = curPick
