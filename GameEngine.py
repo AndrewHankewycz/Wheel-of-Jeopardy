@@ -69,6 +69,9 @@ class GameEngine:
 
     def getPlayers(self):
         clearScreen()
+        print '\n\n********************************************************************'
+        print '******** Welcome to the Wheel of Jeopardy - Team Highlander ********'
+        print '********************************************************************\n'
         prompt = 'How many players would you like? '
         numPlayers = self.inputUtil.promptPlayer(prompt)
 
