@@ -11,7 +11,9 @@ class GameBoard:
         for cat in db.category:
             self.categoryTitles.append(cat[0].category)
 
-    def draw(self, db, curRound):
+        db.printDB()
+
+    def draw(self, db):
         console = sys.stdout    # to save typing
 
         print ' ------------------------------------------------'
@@ -28,7 +30,7 @@ class GameBoard:
             for cat in db.category:
                 written = False
                 for q in cat:
-                    if q.points / curRound / 100 == (i + 1):
+                    if q.points / 100 == (i + 1):
                         console.write(str(q.points) + '\t|')
                         written = True
                 if written == False:

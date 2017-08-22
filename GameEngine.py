@@ -188,10 +188,6 @@ class GameEngine:
     def askQuestion(self, player, categoryId):
         question = self.db.getQuestion(categoryId)
 
-        # TODO this needs work, if they spin again they could land on a token
-        # TODO this needs work, if they spin again they could land on a token
-        # TODO this needs work, if they spin again they could land on a token
-        # TODO this needs work, if they spin again they could land on a token
         # if there is no question left in this category spin again
         while question is None:
             wheelSpot = self.wheel.spin()
@@ -203,8 +199,6 @@ class GameEngine:
 
         promptMsg = 'Prompt: ' + question.prompt + '\n' \
             + player.name + '\'s response: '
-        keyHints = 'Keys: ' + str(question.keywords)
-        print keyHints
         answer = self.inputUtil.promptPlayer(promptMsg)
 
         if answer != '':
@@ -220,7 +214,7 @@ class GameEngine:
         
         game.wheelUI.animate(0,wheelSpot)
         
-        game.board.draw(game.db, game.round)
+        game.board.draw(game.db)
         for x in range(0,len(self.players)):
             myplayer = self.players[x]
             myplayer.showScore()
@@ -288,9 +282,10 @@ for rounds in range(0, game.db.getRounds()):
         # print player.name + '\'s turn'
         game.takeTurn(player)
         activePlayerId = (activePlayerId + 1) % len(game.players)
-
+        
     game.db.nextRound()
     game.round = game.round + 1
+    game.board.setDB(game.db)
 
     print 'Round ' + str(rounds + 1) + ' complete. Moving to round ' + \
         str(rounds + 2) + ' doubles the point values'

@@ -77,13 +77,12 @@ class QuestionDatabase:
                 hasQuestions = True
         # print count
 
-        if not hasQuestions:
-            self.rounds.remove(self.rounds[0])
-
         return hasQuestions
 
     # if there is another round in the database, get the questions ready
     def nextRound(self):
+        self.rounds.remove(self.rounds[0])
+
         if self.rounds:
             self.category = self.rounds[0]
 
