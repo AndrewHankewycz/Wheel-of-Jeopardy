@@ -178,7 +178,11 @@ class GameEngine:
             #print 'would you like to use a token? Enter y or n'
             #player input yes or no
             #if yes, spin again
-            self.useToken(player)
+            if player.freeTurnTokens>0:
+                token_use = raw_input('would you like to use a token? Enter y or n \n')
+                if token_use == 'y':
+                    player.freeTurnTokens -= 1
+                    self.takeTurn(player)
             player.points[self.round-1] -= points
 
         print player.name + ' now has ' + \
@@ -240,7 +244,11 @@ class GameEngine:
             #print 'would you like to use a token? Enter y or n'
             #player input yes or no
             #if yes, spin again
-            self.useToken(player)
+            if player.freeTurnTokens>0:
+                token_use = raw_input('would you like to use a token? Enter y or n \n')
+                if token_use == 'y':
+                    player.freeTurnTokens -= 1
+                    self.takeTurn(player)
         elif wheelSpot == GameEngine.FREE_TURN:
             print 'You get a FREE TURN Token!'
             player.freeTurnTokens = player.freeTurnTokens + 1
