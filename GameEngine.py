@@ -196,7 +196,7 @@ class GameEngine:
         while question is None:
             wheelSpot = self.wheel.spin()
             print 'respinning: ' + str(wheelSpot)
-            if wheelSpot < 5:
+            if wheelSpot <= 5:
                 question = self.db.getQuestion(wheelSpot)
 
         print '\nCategory \'' + question.category + '\''
