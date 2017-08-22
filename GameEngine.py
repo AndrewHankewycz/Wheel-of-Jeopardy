@@ -114,9 +114,10 @@ class GameEngine:
         if player.freeTurnTokens>0:
             token_use = raw_input('would you like to use a token? Enter y or n \n')
             if token_use == 'y':
+                print 'player using token'
                 player.freeTurnTokens -= 1
-                self.takeTurn(player)
-        return
+                return True
+        return False
 
     # prompts a player to pick what category their opponent plays
     def pickOpponentCategory(self, player, opponent):
@@ -178,11 +179,7 @@ class GameEngine:
             #print 'would you like to use a token? Enter y or n'
             #player input yes or no
             #if yes, spin again
-            if player.freeTurnTokens>0:
-                token_use = raw_input('would you like to use a token? Enter y or n \n')
-                if token_use == 'y':
-                    player.freeTurnTokens -= 1
-                    self.takeTurn(player)
+            self.useToken(player)
             player.points[self.round-1] -= points
 
         print player.name + ' now has ' + \
@@ -229,7 +226,7 @@ class GameEngine:
             myplayer.showScore()
 
         # this is a question sector, ask a question
-        if wheelSpot < 5:
+        if wheelSpot <= 5:
             self.askQuestion(player, wheelSpot)
         elif wheelSpot == GameEngine.PLAYER_PICK:
             categoryId = self.pickOwnCategory(player)
@@ -247,11 +244,8 @@ class GameEngine:
             #print 'would you like to use a token? Enter y or n'
             #player input yes or no
             #if yes, spin again
-            if player.freeTurnTokens>0:
-                token_use = raw_input('would you like to use a token? Enter y or n \n')
-                if token_use == 'y':
-                    player.freeTurnTokens -= 1
-                    self.takeTurn(player)
+            if self.useToken(player):
+                self.takeTurn()
         elif wheelSpot == GameEngine.FREE_TURN:
             print 'You get a FREE TURN Token!'
             player.freeTurnTokens = player.freeTurnTokens + 1
@@ -265,8 +259,7 @@ class GameEngine:
             print 'Error: this sector [' + str(wheelSpot) + '] is not implemented!!!!'
             
 
-        prompt = '\n\nPress any key to continue'
-        raw_input(prompt)
+        sleep(2)
 
 
 # create a game object so we can begin the game
