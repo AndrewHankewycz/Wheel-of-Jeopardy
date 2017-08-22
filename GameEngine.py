@@ -37,7 +37,12 @@ class GameEngine:
 
 
     def begin(self, dbFilename):
+        print '\n\n********************************************************************'
+        print '******** Welcome to the Wheel of Jeopardy - Team Highlander ********'
+        print '********************************************************************\n'
+		
         print 'Game Beginning'
+        
 
         self.db = QuestionDatabase()
         self.db.importDB(dbFilename)
